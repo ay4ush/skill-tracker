@@ -33,10 +33,11 @@ def format_skill(skill):
         output += f"  Tags: {', '.join(skill['tags'])}\n"
     if skill.get('notes'):
         output += f"  Notes: {skill['notes']}\n"
-    if skill.get('comments'):
-        output += "  Comments:\n"
-        for c in skill['comments']:
-            output += f"    - {c['timestamp']}: {c['text']}\n"
+    if skill.get('sub_skills'):
+        output += "  Sub-skills:\n"
+        for i, s in enumerate(skill['sub_skills'], 1):
+            text = s.get('text', '') if isinstance(s, dict) else s
+            output += f"    {i}. {text}\n"
     output += f"  Last Updated: {skill['last_updated']}\n"
     return output
 
@@ -66,10 +67,10 @@ def create_parser():
     parser_note.add_argument("name", help="Name of the skill")
     parser_note.add_argument("text", help="Note text")
 
-    # Comment
-    parser_comment = subparsers.add_parser("comment", help="Add a timestamped comment to a skill")
-    parser_comment.add_argument("name", help="Name of the skill")
-    parser_comment.add_argument("text", help="Comment text")
+    # Sub-skill
+    parser_sub_skill = subparsers.add_parser("sub-skill", help="Add a sub-skill to a skill")
+    parser_sub_skill.add_argument("name", help="Name of the skill")
+    parser_sub_skill.add_argument("text", help="Sub-skill text")
 
     # View
     parser_view = subparsers.add_parser("view", help="View full details of a skill")
@@ -119,15 +120,15 @@ def run_cli(args=None):
             manager.add_note(parsed_args.name, parsed_args.text)
             print_success(f"Updated note for '{parsed_args.name}'")
             
-        elif parsed_args.command == "comment":
-            manager.add_comment(parsed_args.name, parsed_args.text)
-            print_success(f"Added comment to '{parsed_args.name}'")
+        elif parsed_args.command == "sub-skill":
+            manager.add_sub_skill(parsed_args.name, parsed_args.text)
+            print_success(f"Added sub-skill to '{parsed_args.name}'")
             
         elif parsed_args.command == "view":
             skill = manager.view_skill(parsed_args.name)
             print(format_skill(skill))
             
-        elif parsed_args.command == "delete":
+        elif parsed_args.command == "del":
             manager.delete_skill(parsed_args.name)
             print_success(f"Deleted skill '{parsed_args.name}'")
 

@@ -22,7 +22,7 @@ class SkillManager:
             "name": name,
             "stage": "TO_LEARN",
             "notes": "",
-            "comments": [],
+            "sub_skills": [],
             "tags": tags or [],
             "last_updated": self._get_timestamp()
         }
@@ -66,15 +66,18 @@ class SkillManager:
         self._save()
         return self.skills[name]
 
-    def add_comment(self, name, text):
+    def add_sub_skill(self, name, text):
         if name not in self.skills:
             raise ValueError(f"Skill '{name}' not found.")
         
-        comment = {
+        sub_skill = {
             "timestamp": self._get_timestamp(),
             "text": text
         }
-        self.skills[name]["comments"].append(comment)
+        if "sub_skills" not in self.skills[name]:
+            self.skills[name]["sub_skills"] = []
+            
+        self.skills[name]["sub_skills"].append(sub_skill)
         self.skills[name]["last_updated"] = self._get_timestamp()
         self._save()
         return self.skills[name]
