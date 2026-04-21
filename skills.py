@@ -71,14 +71,12 @@ class SkillManager:
             raise ValueError(f"Skill '{name}' not found.")
         
         sub_skill = {
-            "timestamp": self._get_timestamp(),
             "text": text
         }
         if "sub_skills" not in self.skills[name]:
             self.skills[name]["sub_skills"] = []
             
         self.skills[name]["sub_skills"].append(sub_skill)
-        self.skills[name]["last_updated"] = self._get_timestamp()
         self._save()
         return self.skills[name]
 

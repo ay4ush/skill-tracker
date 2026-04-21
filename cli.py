@@ -68,7 +68,7 @@ def create_parser():
     parser_note.add_argument("text", help="Note text")
 
     # Sub-skill
-    parser_sub_skill = subparsers.add_parser("sub-skill", help="Add a sub-skill to a skill")
+    parser_sub_skill = subparsers.add_parser("ss", help="Add a sub-skill to a skill")
     parser_sub_skill.add_argument("name", help="Name of the skill")
     parser_sub_skill.add_argument("text", help="Sub-skill text")
 
@@ -77,7 +77,7 @@ def create_parser():
     parser_view.add_argument("name", help="Name of the skill")
 
     # Delete
-    parser_delete = subparsers.add_parser("delete", help="Delete a skill")
+    parser_delete = subparsers.add_parser("del", help="Delete a skill")
     parser_delete.add_argument("name", help="Name of the skill")
 
     # Push
@@ -120,7 +120,7 @@ def run_cli(args=None):
             manager.add_note(parsed_args.name, parsed_args.text)
             print_success(f"Updated note for '{parsed_args.name}'")
             
-        elif parsed_args.command == "sub-skill":
+        elif parsed_args.command == "ss":
             manager.add_sub_skill(parsed_args.name, parsed_args.text)
             print_success(f"Added sub-skill to '{parsed_args.name}'")
             
